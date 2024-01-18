@@ -7,7 +7,7 @@ export const config = {
 export default async function handler(req) {
   try {
     const { message } = await req.json();
-    const stream = new OpenAIEdgeStream("https://api.openai.com/v1/chat/completions"
+    const stream = await OpenAIEdgeStream("https://api.openai.com/v1/chat/completions"
     ,{
      headers: {
       'content-type': 'application/json',
@@ -20,7 +20,6 @@ export default async function handler(req) {
         stream: true,
      }),
     });
-    console.log("log the stream", stream);
      return new Response(stream);
   } catch(e) {
     console.log("log the error", e);

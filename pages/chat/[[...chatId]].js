@@ -1,14 +1,26 @@
 import Head from "next/head";
+import { Message } from "components/Message";
 import { ChatSidebar } from "components/ChatSidebar";
 import { useState } from "react";
 import { streamReader } from "openai-edge-stream";
+import {v4 as uuid} from 'uuid';
 
 export default function ChatPage() {
+  const [incomingMessage, setIncomingMessage ] = useState("");
   const [messageText, setMessageText] = useState("");
+  const [newChatMessages, setNewChatMessages] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("log the message text", messageText);
+    setNewChatMessages( prev => {
+      const newChatMessages = [...prev, {
+        _id:uuid(),
+        role: "user",
+        content: messageText,
+      },
+    ];
+    return newChatMessages;
+    })
     const response = await fetch(`/api/chat/sendMessage`, {
       method: "POST",
       headers: {
@@ -17,18 +29,14 @@ export default function ChatPage() {
       body: JSON.stringify({message: messageText}),
     });
 
-    console.log("log the response", response);
     const data = response.body;
-    console.log("log the data", data);
     if(!data) {
-      console.log("got to no data");
       return;
     }
 
     const reader = data.getReader();
-    console.log("log the reader", reader);
-    await streamReader(reader, async (message) => {
-      console.log("log the message", message);
+    await streamReader(reader, (message) => {
+      setIncomingMessage(s => `${s}${message.content}`)
     });
   };
 
@@ -41,7 +49,18 @@ export default function ChatPage() {
         <ChatSidebar />
 
         <div className="bg-gray-700 flex flex-col">
-          <div className="flex-1">chat window</div>
+          <div className="flex-1 text-white">
+            {newChatMessages.map((message) => (
+              <Message
+                key={message._id}
+                role={message.role}
+                content={message.content}
+              />
+            ))}
+            {!!incomingMessage && (
+              <Message role={"assistant"} content={incomingMessage} />
+            )}
+            </div>
           <footer className="bg-gray-800 p-10">
             <form onSubmit={handleSubmit}>
               <fieldset className="flex gap-2">

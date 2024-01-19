@@ -8,7 +8,7 @@ export const Message = ({role, content}) => {
   <div className={`grid grid-cols-[30px_1fr] gap-5 p-5 ${role === "assistant" ? "bg-gray-600" : ""
   }`}>
   <div>
-    {role === "user" && (
+    {role === "user" && !!user && (
       <img src={user.picture} width={30} height={30} alt="User avatar" className="rounded-sm shadow-md shadow-black/50"/>
   )}
   {role === "assistant" && (

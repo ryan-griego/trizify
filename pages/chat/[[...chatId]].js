@@ -24,23 +24,35 @@ export default function ChatPage() {
     return newChatMessages;
     })
     setMessageText("");
-    const response = await fetch(`/api/chat/sendMessage`, {
+    const response = await fetch(`/api/chat/createNewChat`, {
       method: "POST",
       headers: {
         'content-type': 'application/json'
       },
-      body: JSON.stringify({message: messageText}),
+      body: JSON.stringify({
+        message: messageText,
+      }),
     });
+    const json = await response.json();
 
-    const data = response.body;
-    if(!data) {
-      return;
-    }
+    console.log("NEW CHAT:", json);
+    // const response = await fetch(`/api/chat/sendMessage`, {
+    //   method: "POST",
+    //   headers: {
+    //     'content-type': 'application/json'
+    //   },
+    //   body: JSON.stringify({message: messageText}),
+    // });
 
-    const reader = data.getReader();
-    await streamReader(reader, (message) => {
-      setIncomingMessage(s => `${s}${message.content}`)
-    });
+    // const data = response.body;
+    // if(!data) {
+    //   return;
+    // }
+
+    // const reader = data.getReader();
+    // await streamReader(reader, (message) => {
+    //   setIncomingMessage(s => `${s}${message.content}`)
+    // });
     setGeneratingResponse(false);
   };
 
@@ -52,8 +64,8 @@ export default function ChatPage() {
     <div className ="grid h-screen grid-cols-[260px_1fr]">
         <ChatSidebar />
 
-        <div className="bg-gray-700 flex flex-col">
-          <div className="flex-1 text-white">
+        <div className="bg-gray-700 flex flex-col overflow-hidden">
+          <div className="flex-1 text-white overflow-scroll">
             {newChatMessages.map((message) => (
               <Message
                 key={message._id}

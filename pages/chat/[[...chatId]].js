@@ -1,15 +1,29 @@
 import Head from "next/head";
 import { Message } from "components/Message";
 import { ChatSidebar } from "components/ChatSidebar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import { streamReader } from "openai-edge-stream";
 import {v4 as uuid} from 'uuid';
+import { getSession } from "@auth0/nextjs-auth0";
+import clientPromise from "lib/mongodb";
+import { ObjectId } from "mongodb";
 
-export default function ChatPage() {
+export default function ChatPage({ chatId, title, messages }) {
+  console.log("log the props: ", chatId, title, messages);
   const [incomingMessage, setIncomingMessage ] = useState("");
   const [messageText, setMessageText] = useState("");
   const [newChatMessages, setNewChatMessages] = useState([]);
   const [generatingResponse, setGeneratingResponse] = useState(false);
+  const [newChatId, setNewChatId] = useState(null);
+  const router = useRouter();
+
+  useEffect(() => {
+    if(!generatingResponse && newChatId) {
+      setNewChatId(null);
+      router.push(`/chat/${newChatId}`);
+    }
+  }, [newChatId, generatingResponse, router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -52,7 +66,11 @@ export default function ChatPage() {
     const reader = data.getReader();
     await streamReader(reader, (message) => {
       console.log("Log message: ", message);
-      setIncomingMessage(s => `${s}${message.content}`)
+      if(message.event === "newChatId") {
+        setNewChatId(message.content);
+      } else {
+        setIncomingMessage(s => `${s}${message.content}`)
+      }
     });
     setGeneratingResponse(false);
   };
@@ -63,7 +81,7 @@ export default function ChatPage() {
         <title>New chat</title>
       </Head>
     <div className ="grid h-screen grid-cols-[260px_1fr]">
-        <ChatSidebar />
+        <ChatSidebar chatId={chatId}/>
 
         <div className="bg-gray-700 flex flex-col overflow-hidden">
           <div className="flex-1 text-white overflow-scroll">
@@ -97,4 +115,31 @@ export default function ChatPage() {
     </div>
     </>
   );
+}
+
+export const getServerSideProps = async (ctx) => {
+  const chatId = ctx.params?.chatId?.[0] || null;
+  if(chatId) {
+    const {user} = await getSession(ctx.req, ctx.res);
+    const client = await clientPromise;
+    const db = client.db("ChatRrg");
+    const chat = await db.collection("chats").findOne({
+      userId: user.sub,
+      _id: new ObjectId(chatId)
+    });
+
+  return {
+    props: {
+      chatId,
+      title: chat.title,
+      messages: chat.messages.map(message => ({
+        ...message,
+        _id: uuid(),
+      }))
+    }
+  }
+  }
+  return {
+   props: {},
+  }
 }

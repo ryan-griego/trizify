@@ -9,7 +9,7 @@ import { getSession } from "@auth0/nextjs-auth0";
 import clientPromise from "lib/mongodb";
 import { ObjectId } from "mongodb";
 
-export default function ChatPage({ chatId, title, messages }) {
+export default function ChatPage({ chatId, title, messages = [] }) {
   console.log("log the props: ", chatId, title, messages);
   const [incomingMessage, setIncomingMessage ] = useState("");
   const [messageText, setMessageText] = useState("");
@@ -17,6 +17,11 @@ export default function ChatPage({ chatId, title, messages }) {
   const [generatingResponse, setGeneratingResponse] = useState(false);
   const [newChatId, setNewChatId] = useState(null);
   const router = useRouter();
+
+  useEffect(() => {
+    setNewChatMessages([]);
+    setNewChatId(null);
+  }, [chatId]);
 
   useEffect(() => {
     if(!generatingResponse && newChatId) {
@@ -72,8 +77,11 @@ export default function ChatPage({ chatId, title, messages }) {
         setIncomingMessage(s => `${s}${message.content}`)
       }
     });
+    setIncomingMessage("");
     setGeneratingResponse(false);
   };
+
+  const allMessages = [...messages, ...newChatMessages];
 
   return (
     <>
@@ -85,7 +93,7 @@ export default function ChatPage({ chatId, title, messages }) {
 
         <div className="bg-gray-700 flex flex-col overflow-hidden">
           <div className="flex-1 text-white overflow-scroll">
-            {newChatMessages.map((message) => (
+            {allMessages.map((message) => (
               <Message
                 key={message._id}
                 role={message.role}

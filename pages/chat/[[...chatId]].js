@@ -113,20 +113,22 @@ export default function ChatPage({ chatId, title, messages = [] }) {
         <ChatSidebar chatId={chatId}/>
 
         <div className="bg-gray-700 flex flex-col overflow-hidden">
-          <div className="flex-1 text-white overflow-scroll">
-            {allMessages.map((message) => (
-              <Message
-                key={message._id}
-                role={message.role}
-                content={message.content}
-              />
-            ))}
-            {!!incomingMessage &&  !routeHasChanged &&(
-              <Message role={"assistant"} content={incomingMessage} />
-            )}
-            {!!incomingMessage && !!routeHasChanged && (
-            <Message role="notice" content="Only one message at a time. Please allow any other responses to complete before sending another message."/>
-            )}
+          <div className="flex-1 flex flex-col-reverse text-white overflow-scroll">
+              <div className="mb-auto">
+                  {allMessages.map((message) => (
+                    <Message
+                      key={message._id}
+                      role={message.role}
+                      content={message.content}
+                    />
+                  ))}
+                  {!!incomingMessage &&  !routeHasChanged &&(
+                    <Message role={"assistant"} content={incomingMessage} />
+                  )}
+                  {!!incomingMessage && !!routeHasChanged && (
+                  <Message role="notice" content="Only one message at a time. Please allow any other responses to complete before sending another message."/>
+                  )}
+              </div>
             </div>
           <footer className="bg-gray-800 p-10">
             <form onSubmit={handleSubmit}>

@@ -1,6 +1,8 @@
 import Head from "next/head";
 import { Message } from "components/Message";
 import { ChatSidebar } from "components/ChatSidebar";
+import { faRobot } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { streamReader } from "openai-edge-stream";
@@ -61,18 +63,6 @@ export default function ChatPage({ chatId, title, messages = [] }) {
     return newChatMessages;
     })
     setMessageText("");
-    // const response = await fetch(`/api/chat/createNewChat`, {
-    //   method: "POST",
-    //   headers: {
-    //     'content-type': 'application/json'
-    //   },
-    //   body: JSON.stringify({
-    //     message: messageText,
-    //   }),
-    // });
-    // const json = await response.json();
-
-    //console.log("NEW CHAT:", json);
     const response = await fetch(`/api/chat/sendMessage`, {
       method: "POST",
       headers: {
@@ -111,9 +101,19 @@ export default function ChatPage({ chatId, title, messages = [] }) {
       </Head>
     <div className ="grid h-screen grid-cols-[260px_1fr]">
         <ChatSidebar chatId={chatId}/>
-
         <div className="bg-gray-700 flex flex-col overflow-hidden">
           <div className="flex-1 flex flex-col-reverse text-white overflow-scroll">
+            {!allMessages.length && !incomingMessage &&
+              <div className="m-auto justify-center flex items-center text-center">
+                <div>
+                  <FontAwesomeIcon icon={faRobot} className="text-6xl text-emerald-200"/>
+                  <h1 className="text-4xl font-bold text-white/50 mt-2">
+                    Ask me a question!
+                  </h1>
+                </div>
+              </div>
+            }
+              {!!allMessages.length && (
               <div className="mb-auto">
                   {allMessages.map((message) => (
                     <Message
@@ -129,7 +129,8 @@ export default function ChatPage({ chatId, title, messages = [] }) {
                   <Message role="notice" content="Only one message at a time. Please allow any other responses to complete before sending another message."/>
                   )}
               </div>
-            </div>
+                )}
+          </div>
           <footer className="bg-gray-800 p-10">
             <form onSubmit={handleSubmit}>
               <fieldset className="flex gap-2" disabled={generatingResponse}>
@@ -146,7 +147,7 @@ export default function ChatPage({ chatId, title, messages = [] }) {
             </form>
           </footer>
           </div>
-    </div>
+        </div>
     </>
   );
 }
@@ -176,4 +177,4 @@ export const getServerSideProps = async (ctx) => {
   return {
    props: {},
   }
-}
+};

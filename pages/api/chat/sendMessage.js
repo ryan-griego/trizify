@@ -8,6 +8,15 @@ export default async function handler(req) {
   try {
     // Sets an alias of chatIdFromParam
     const { chatId: chatIdFromParam, message } = await req.json();
+    // validate message data
+    if(!message || typeof message !== "string" || message.length > 200) {
+        return new Response ({
+          message: "message is required and must be less than 200 characters"
+        },
+        {
+          status: 422,
+        })
+    }
     let chatId = chatIdFromParam;
     console.log("MESSAGE: ", message);
     const initialChatMessage = {
@@ -79,7 +88,7 @@ export default async function handler(req) {
      method: "POST",
      body: JSON.stringify({
         model: "gpt-3.5-turbo",
-      //  model: "gpt-4-turbo-preview",
+        //model: "gpt-4-turbo-preview",
         messages: [initialChatMessage, ...messagesToInclude, {content: message, role: "user"}],
         stream: true,
      }),
@@ -107,6 +116,11 @@ export default async function handler(req) {
     });
      return new Response(stream);
   } catch(e) {
+    return new Response({message: "An error occured in sendMessage"},
+      {
+        status: 500,
+      }
+    )
     console.log("log the error", e);
   }
 }

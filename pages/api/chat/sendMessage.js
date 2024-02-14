@@ -15,7 +15,7 @@ export default async function handler(req) {
         },
         {
           status: 422,
-        })
+        });
     }
     let chatId = chatIdFromParam;
     console.log("MESSAGE: ", message);
@@ -121,6 +121,5 @@ export default async function handler(req) {
         status: 500,
       }
     )
-    console.log("log the error", e);
   }
 }

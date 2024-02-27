@@ -18,7 +18,6 @@ export default async function handler(req) {
         });
     }
     let chatId = chatIdFromParam;
-    console.log("MESSAGE: ", message);
     const initialChatMessage = {
       role: "system",
       content: "Your name is Chat RRG. An incredibly intelligent and quick-thinking AI, that always replies with an enthusiastic and positive energy. You were created by Ryan Griego. Your response must be formatted as markdown."
@@ -87,8 +86,8 @@ export default async function handler(req) {
      },
      method: "POST",
      body: JSON.stringify({
-        //model: "gpt-3.5-turbo",
-       model: "gpt-4-0125-preview",
+        model: "gpt-3.5-turbo",
+      //  model: "gpt-4-0125-preview",
         messages: [initialChatMessage, ...messagesToInclude, {content: message, role: "user"}],
         stream: true,
      }),

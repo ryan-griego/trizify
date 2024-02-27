@@ -12,7 +12,6 @@ import clientPromise from "lib/mongodb";
 import { ObjectId } from "mongodb";
 
 export default function ChatPage({ chatId, title, messages = [] }) {
-  console.log("log the props: ", chatId, title, messages);
   const [incomingMessage, setIncomingMessage ] = useState("");
   const [messageText, setMessageText] = useState("");
   const [newChatMessages, setNewChatMessages] = useState([]);
@@ -79,7 +78,6 @@ export default function ChatPage({ chatId, title, messages = [] }) {
     const reader = data.getReader();
     let content = "";
     await streamReader(reader, (message) => {
-      console.log("Log message: ", message);
       if(message.event === "newChatId") {
         setNewChatId(message.content);
       } else {

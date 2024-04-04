@@ -1,34 +1,29 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# ChatRRG
+
+
+![ChatRRG screenshot](https://res.cloudinary.com/dm7y3yvjp/image/upload/v1712272557/chatRRG-screenshot_dbpb2a.png)
+
+
+Chat RRG is a application that allows users to interact with OpenAI's ChatGPT directly using their own OpenAI API key. This application is built using Next.js, a popular React framework, and connects to the OpenAI API to provide a seamless chat experience.
+
+## Key Features
+
+- **Direct API Access**: By using your own OpenAI API key, you can interact with ChatGPT directly. This means your requests go straight to OpenAI, without any middlemen.
+
+- **Privacy**: One of the benefits of using the API directly is that OpenAI does not track the messages you send. This is great for privacy-conscious users who want to ensure their data remains confidential.
+
+- **Customizable Prompts**: With specific prompts, you can guide the language model to respond in the way you want. This allows for a more personalized and controlled chat experience.
 
 ## Getting Started
 
-First, run the development server:
+To get started with Chat RRG, you'll need to have Node.js and npm installed on your machine. Once you have these, follow the steps below:
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+1. Clone the repository to your local machine using `git clone`.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Navigate to the project directory and install the dependencies using `npm install`.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+3. Create a `.env` file in the root of the project and add your OpenAI API key as `OPENAI_API_KEY`.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+4. Start the development server using `npm run dev`.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+5. Open your browser and navigate to `http://localhost:3000` to start using the application.

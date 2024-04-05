@@ -58,6 +58,7 @@ export default async function handler(req) {
         }),
       });
       const json = await response.json();
+      chatId = json._id;
       newChatId = json._id;
       chatMessages = json.messages || [];
     }

@@ -136,7 +136,6 @@ export default function ChatPage({ chatId, title, messages = [] }) {
                 value={messageText}
                 onChange={e => setMessageText(e.target.value)}
                 placeholder={generatingResponse ? "" : "Send a message..."}
-                placeholder="Send a message..."
                 className="w-full resize-none rounded-md bg-gray-700 p-2 text-white focus:border-emerald-500 focus:bg-gray-600 focus:outline focus:outline-emerald-500" />
                 <button type="submit" className="btn">
                   Send

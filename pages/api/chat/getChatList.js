@@ -18,6 +18,8 @@ export default async function handler(req, res) {
       _id: -1
     }).toArray();
 
+
+
     res.status(200).json({chats});;
 
   } catch(e){

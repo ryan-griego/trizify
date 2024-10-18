@@ -32,6 +32,5 @@ export default async function handler(req, res) {
     });
   } catch(e) {
     res.status(500).json({message: "An error occured when creating a new chat."})
-    console.log("Error occured in createnewchat", e);
   }
 }

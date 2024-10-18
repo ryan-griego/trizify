@@ -62,6 +62,9 @@ export default function ChatPage({ chatId, title, messages = [] }) {
     return newChatMessages;
     })
     setMessageText("");
+
+
+
     const response = await fetch(`/api/chat/sendMessage`, {
       method: "POST",
       headers: {
@@ -69,6 +72,8 @@ export default function ChatPage({ chatId, title, messages = [] }) {
       },
       body: JSON.stringify({ chatId, message: messageText}),
     });
+
+    console.log("og the response", response);
 
     const data = response.body;
     if(!data) {

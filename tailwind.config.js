@@ -10,8 +10,13 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        body: 'var(--font-outfit), sans-serif',
-      }
+        // body: 'var(--font-outfit), sans-serif',
+        body: ['"JetBrains Mono"', "monospace"],
+      },
+      colors: {
+        'very-dark-blue': '#0d1b2a', // Replace with your desired hex code
+        'dark-blue': '#19426e', // Replace with your desired hex code
+      },
     },
   },
   plugins: [require("@tailwindcss/typography")],

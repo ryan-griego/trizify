@@ -1,10 +1,7 @@
-# ChatRRG
+# TRIZify
 
 
-![ChatRRG screenshot](https://res.cloudinary.com/dm7y3yvjp/image/upload/v1712272557/chatRRG-screenshot_dbpb2a.png)
-
-
-Chat RRG is a application that allows users to interact with OpenAI's ChatGPT directly using their own OpenAI API key. This application is built using Next.js, and connects to the OpenAI API.
+Using OpenAI's LLM, TRIZify will use the TRIZ principles to help you systematically solve complex problems, innovate efficiently, and overcome contradictions. This application is built using Next.js, and connects to the OpenAI API.
 
 ## Key Features
 
@@ -16,7 +13,7 @@ Chat RRG is a application that allows users to interact with OpenAI's ChatGPT di
 
 ## Getting Started
 
-To get started with Chat RRG, you'll need to have Node.js and npm installed on your machine. Once you have these, follow the steps below:
+To get started with TRIZify, you'll need to have Node.js and npm installed on your machine. Once you have these, follow the steps below:
 
 1. Clone the repository to your local machine using `git clone`.
 

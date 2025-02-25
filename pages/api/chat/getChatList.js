@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   try{
     const {user} = await getSession(req, res);
     const client = await clientPromise;
-    const db = client.db("ChatRrg");
+    const db = client.db("trizify");
     const chats = await db.collection("chats").find({
       userId: user.sub
     }, {

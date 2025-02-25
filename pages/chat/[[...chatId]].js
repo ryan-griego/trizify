@@ -2,6 +2,7 @@ import Head from "next/head";
 import { Message } from "components/Message";
 import { ChatSidebar } from "components/ChatSidebar";
 import { faRobot } from "@fortawesome/free-solid-svg-icons";
+import { faCode } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -104,14 +105,14 @@ export default function ChatPage({ chatId, title, messages = [] }) {
       </Head>
     <div className ="grid h-screen grid-cols-[260px_1fr]">
         <ChatSidebar chatId={chatId}/>
-        <div className="bg-gray-700 flex flex-col overflow-hidden">
+        <div className="bg-very-dark-blue flex flex-col overflow-hidden">
           <div className="flex-1 flex flex-col-reverse text-white overflow-scroll">
             {!allMessages.length && !incomingMessage &&
               <div className="m-auto justify-center flex items-center text-center">
                 <div>
-                  <FontAwesomeIcon icon={faRobot} className="text-6xl text-emerald-200"/>
+                  <FontAwesomeIcon icon={faCode} className="text-6xl text-emerald-200"/>
                   <h1 className="text-4xl font-bold text-white/50 mt-2">
-                    Ask me a question!
+                    How can I help you today?
                   </h1>
                 </div>
               </div>
@@ -134,20 +135,20 @@ export default function ChatPage({ chatId, title, messages = [] }) {
               </div>
                 )}
           </div>
-          <footer className="bg-gray-800 p-10">
-            <form onSubmit={handleSubmit}>
-              <fieldset className="flex gap-2" disabled={generatingResponse}>
-                <textarea
+          <footer className="bg-gray-800 h-1/4 p-6">
+            <form onSubmit={handleSubmit} className="h-full flex items-end gap-2">
+              <textarea
                 value={messageText}
                 onChange={e => setMessageText(e.target.value)}
-                placeholder={generatingResponse ? "" : "Send a message..."}
-                className="w-full resize-none rounded-md bg-gray-700 p-2 text-white focus:border-emerald-500 focus:bg-gray-600 focus:outline focus:outline-emerald-500" />
-                <button type="submit" className="btn">
-                  Send
-                </button>
-              </fieldset>
+                placeholder={generatingResponse ? "" : "Tell me your problem..."}
+                className="flex-1 h-full resize-none rounded-md bg-gray-700 p-3 text-white focus:border-emerald-500 focus:bg-gray-600 focus:outline focus:outline-emerald-500"
+              />
+              <button type="submit" className="btn px-6 py-2 self-end">
+                Send
+              </button>
             </form>
           </footer>
+
           </div>
         </div>
     </>
@@ -171,7 +172,7 @@ export const getServerSideProps = async (ctx) => {
 
     const {user} = await getSession(ctx.req, ctx.res);
     const client = await clientPromise;
-    const db = client.db("ChatRrg");
+    const db = client.db("trizify");
     const chat = await db.collection("chats").findOne({
       userId: user.sub,
       _id: objectId,

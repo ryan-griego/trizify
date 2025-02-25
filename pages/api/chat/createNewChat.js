@@ -19,7 +19,7 @@ export default async function handler(req, res) {
       content: message,
     };
     const client = await clientPromise;
-    const db = client.db("ChatRrg");
+    const db = client.db("trizify");
     const chat = await db.collection("chats").insertOne({
       userId: user.sub,
       messages: [newUserMessage],
